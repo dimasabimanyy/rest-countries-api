@@ -1,11 +1,24 @@
 import React from "react";
 
-const Header = () => {
+const Header = ({ darkMode, modeChanger }) => {
   return (
-    <header>
+    <header className={`${darkMode ? `charcoal` : `light`}`}>
       <div className="header-wrapper container">
         <h2>Where in the world ?</h2>
-        <h3>Dark Mode</h3>
+        <button
+          className={`${darkMode ? `charcoal` : `light`}`}
+          onClick={modeChanger}
+        >
+          {darkMode ? (
+            <span>
+              <i className="fas fa-moon"></i> Light Mode
+            </span>
+          ) : (
+            <span>
+              <i className="far fa-moon"></i> Dark Mode
+            </span>
+          )}
+        </button>
       </div>
     </header>
   );

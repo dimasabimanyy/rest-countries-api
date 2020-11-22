@@ -1,12 +1,14 @@
 import React from "react";
 
-const Country = ({ country }) => {
+const Country = ({ country, darkMode }) => {
+  console.log(darkMode);
+
   return (
     <div className="country">
       <div className="country-image">
         <img src={country.flag} alt={country.name} />
       </div>
-      <div className="country-info">
+      <div className={`country-info ${darkMode ? `charcoal` : `light`}`}>
         <h2>{country.name}</h2>
         <ul>
           <li>
@@ -21,9 +23,6 @@ const Country = ({ country }) => {
           </li>
         </ul>
       </div>
-      {/* <Link key={country.alpha3Code} className="block m-auto" to={'/detail/' + country.alpha3Code}>
-            <Country country={country} />
-        </Link>) */}
     </div>
   );
 };

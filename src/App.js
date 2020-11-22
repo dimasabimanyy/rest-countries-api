@@ -9,6 +9,7 @@ function App() {
   const [countries, setCountries] = useState([]);
   const [searchCountries, setSearchCountries] = useState("");
   const [isLoading, setIsLoading] = useState(true);
+  const [darkMode, setDarkMode] = useState(true);
 
   useEffect(() => {
     const fetchItems = async () => {
@@ -29,11 +30,26 @@ function App() {
     fetchItems();
   }, [searchCountries]);
 
+  const modeChanger = () => {
+    if (darkMode === true) {
+      setDarkMode(false);
+    } else {
+      setDarkMode(true);
+    }
+  };
+
   return (
-    <div className="App">
-      <Header />
-      <SearchCountries searchCountries={(q) => setSearchCountries(q)} />
-      <Countries countries={countries} isLoading={isLoading} />
+    <div className={`App ${darkMode ? `dark` : `light`}`}>
+      <Header darkMode={darkMode} modeChanger={modeChanger} />
+      <SearchCountries
+        searchCountries={(q) => setSearchCountries(q)}
+        darkMode={darkMode}
+      />
+      <Countries
+        countries={countries}
+        isLoading={isLoading}
+        darkMode={darkMode}
+      />
     </div>
   );
 }

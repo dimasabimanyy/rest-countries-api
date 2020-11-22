@@ -31,7 +31,8 @@ header {
 
 .countries {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(240px, 260px));
+  /* grid-template-columns: 1fr 1fr 1fr 1fr; */
   gap: 3rem;
   padding: 5rem 0;
 }
@@ -73,6 +74,22 @@ header {
 
 .country-info li span {
   font-weight: 600;
+}
+
+.search {
+  margin-top: 3rem;
+}
+
+.search form input {
+  background: #2b3945;
+  border: none;
+  padding: 1rem;
+  font-size: 1rem;
+  min-width: 400px;
+  font-family: "Nunito Sans", sans-serif;
+  outline: none;
+  color: #ffffff;
+  border-radius: 4px;
 }
 
 @media screen and (max-width: 1250px) {

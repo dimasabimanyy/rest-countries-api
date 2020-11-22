@@ -3,25 +3,37 @@ import "./App.css";
 import axios from "axios";
 import Countries from "./components/Countries";
 import Header from "./components/Header";
+import SearchCountries from "./components/SearchCountries";
 
 function App() {
   const [countries, setCountries] = useState([]);
+  const [searchCountries, setSearchCountries] = useState("");
+  const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
     const fetchItems = async () => {
-      const result = await axios(`https://restcountries.eu/rest/v2/all`);
+      if (searchCountries === "") {
+        const result = await axios(`https://restcountries.eu/rest/v2/all`);
 
-      setCountries(result.data);
-      console.log(result.data);
+        setCountries(result.data);
+        setIsLoading(false);
+      } else {
+        const result = await axios(
+          `https://restcountries.eu/rest/v2/name/${searchCountries}`
+        );
+        setCountries(result.data);
+        setIsLoading(false);
+      }
     };
 
     fetchItems();
-  }, []);
+  }, [searchCountries]);
 
   return (
     <div className="App">
       <Header />
-      <Countries countries={countries} />
+      <SearchCountries searchCountries={(q) => setSearchCountries(q)} />
+      <Countries countries={countries} isLoading={isLoading} />
     </div>
   );
 }

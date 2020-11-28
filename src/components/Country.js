@@ -1,8 +1,6 @@
 import React from "react";
 
 const Country = ({ country, darkMode }) => {
-  console.log(darkMode);
-
   return (
     <div className="country">
       <div className="country-image">

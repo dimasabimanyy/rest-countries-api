@@ -3,33 +3,43 @@ import "./App.css";
 import axios from "axios";
 import Countries from "./components/Countries";
 import Header from "./components/Header";
-import SearchCountries from "./components/SearchCountries";
 
 function App() {
   const [countries, setCountries] = useState([]);
   const [searchCountries, setSearchCountries] = useState("");
+  const [query, setQuery] = useState("")
   const [isLoading, setIsLoading] = useState(true);
   const [darkMode, setDarkMode] = useState(true);
 
   useEffect(() => {
     const fetchItems = async () => {
-      if (searchCountries === "") {
+      if (query === "") {
         const result = await axios(`https://restcountries.eu/rest/v2/all`);
 
         setCountries(result.data);
         setIsLoading(false);
       } else {
         const result = await axios(
-          `https://restcountries.eu/rest/v2/name/${searchCountries}`
-        );
+          `https://restcountries.eu/rest/v2/name/${query}`
+        )
         setCountries(result.data);
         setIsLoading(false);
       }
     };
 
     fetchItems();
-  }, [searchCountries]);
-
+  }, [query]);
+  
+  const onChange = (e) => {
+    setSearchCountries(e.target.value);
+  };
+  
+  const onSubmit = e => {
+    e.preventDefault();
+    setQuery(searchCountries);
+    setSearchCountries("");
+  }
+  
   const modeChanger = () => {
     if (darkMode === true) {
       setDarkMode(false);
@@ -41,10 +51,23 @@ function App() {
   return (
     <div className={`App ${darkMode ? `dark` : `light`}`}>
       <Header darkMode={darkMode} modeChanger={modeChanger} />
-      <SearchCountries
-        searchCountries={(q) => setSearchCountries(q)}
-        darkMode={darkMode}
-      />
+
+      {/* Search Form */}
+      <div className={`search container ${darkMode ? `dark` : `light`}`}>
+        <form className={`search-form ${darkMode ? `charcoal` : `light`}`} onSubmit={onSubmit}>
+          <div>
+            <i className="fas fa-search"></i>
+          </div>
+          <input
+            type="text"
+            placeholder="Search countries"
+            value={searchCountries}
+            onChange={onChange}
+            className={`${darkMode ? `charcoal` : `light`}`}
+          />
+        </form>
+      </div>
+
       <Countries
         countries={countries}
         isLoading={isLoading}

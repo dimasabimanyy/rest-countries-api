@@ -16,8 +16,7 @@ const Country = ({ country, darkMode }) => {
             <span>Region :</span> {country.region}
           </li>
           <li>
-            <span>Capital : </span>
-            {country.capital}
+            <span>Capital : </span> {country.capital}
           </li>
         </ul>
       </div>

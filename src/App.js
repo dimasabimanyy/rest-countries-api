@@ -6,22 +6,23 @@ import Header from "./components/Header";
 
 function App() {
   const [countries, setCountries] = useState([]);
-  const [searchCountries, setSearchCountries] = useState("");
-  const [query, setQuery] = useState("")
   const [isLoading, setIsLoading] = useState(true);
-  const [darkMode, setDarkMode] = useState(true);
+  // Untuk Handle input form
+  const [searchCountries, setSearchCountries] = useState("");
+  // Untuk Endpoint url search
+  const [query, setQuery] = useState("");
+  const [darkMode, setDarkMode] = useState(getInitialMode());
 
   useEffect(() => {
     const fetchItems = async () => {
       if (query === "") {
         const result = await axios(`https://restcountries.eu/rest/v2/all`);
-
         setCountries(result.data);
         setIsLoading(false);
       } else {
         const result = await axios(
           `https://restcountries.eu/rest/v2/name/${query}`
-        )
+        );
         setCountries(result.data);
         setIsLoading(false);
       }
@@ -29,23 +30,29 @@ function App() {
 
     fetchItems();
   }, [query]);
-  
+
+  // Assign dark mode
+  useEffect(() => {
+    localStorage.setItem("dark", JSON.stringify(darkMode));
+  }, [darkMode]);
+
+  function getInitialMode() {
+    const savedMode = JSON.parse(localStorage.getItem("dark"));
+    return savedMode || false;
+  }
+
   const onChange = (e) => {
     setSearchCountries(e.target.value);
   };
-  
-  const onSubmit = e => {
+
+  const handleSubmit = (e) => {
     e.preventDefault();
     setQuery(searchCountries);
-    setSearchCountries("");
-  }
-  
+    // setSearchCountries("");
+  };
+
   const modeChanger = () => {
-    if (darkMode === true) {
-      setDarkMode(false);
-    } else {
-      setDarkMode(true);
-    }
+    setDarkMode((prevMode) => !prevMode);
   };
 
   return (
@@ -54,20 +61,24 @@ function App() {
 
       {/* Search Form */}
       <div className={`search container ${darkMode ? `dark` : `light`}`}>
-        <form className={`search-form ${darkMode ? `charcoal` : `light`}`} onSubmit={onSubmit}>
+        <form
+          className={`search-form ${darkMode ? `charcoal` : `light`}`}
+          onSubmit={handleSubmit}
+        >
           <div>
             <i className="fas fa-search"></i>
           </div>
           <input
             type="text"
             placeholder="Search countries"
-            value={searchCountries}
             onChange={onChange}
+            value={searchCountries}
             className={`${darkMode ? `charcoal` : `light`}`}
           />
         </form>
       </div>
 
+      {/* Show All Data */}
       <Countries
         countries={countries}
         isLoading={isLoading}

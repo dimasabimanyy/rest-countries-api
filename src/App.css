@@ -10,6 +10,10 @@ body {
   font-family: "Nunito Sans", sans-serif;
 }
 
+.App {
+  min-height: 100vh;
+}
+
 /* Dark Mode */
 
 .dark {
@@ -24,10 +28,17 @@ body {
   color: #ffffff;
 }
 
+/* Light Mode */
+
 .light {
   transition: 0.4s;
   background: #ffffff !important;
   color: #1d1515 !important;
+}
+
+.container {
+  width: 1200px;
+  margin: 0 auto;
 }
 
 /* HEADER */
@@ -41,11 +52,6 @@ header {
 .header-wrapper {
   display: flex;
   justify-content: space-between;
-}
-
-.container {
-  width: 1200px;
-  margin: 0 auto;
 }
 
 .countries {

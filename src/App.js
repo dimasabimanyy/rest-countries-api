@@ -3,13 +3,12 @@ import "./App.css";
 import axios from "axios";
 import Countries from "./components/Countries";
 import Header from "./components/Header";
+import SearchForm from "./components/SearchForm";
 
 function App() {
   const [countries, setCountries] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
-  // Untuk Handle input form
   const [searchCountries, setSearchCountries] = useState("");
-  // Untuk Endpoint url search
   const [query, setQuery] = useState("");
   const [darkMode, setDarkMode] = useState(getInitialMode());
 
@@ -31,15 +30,18 @@ function App() {
     fetchItems();
   }, [query]);
 
-  // Assign dark mode
   useEffect(() => {
-    localStorage.setItem("dark", JSON.stringify(darkMode));
+    localStorage.setItem("darkMode", JSON.stringify(darkMode));
   }, [darkMode]);
 
   function getInitialMode() {
-    const savedMode = JSON.parse(localStorage.getItem("dark"));
-    return savedMode || false;
+    const savedMode = JSON.parse(localStorage.getItem("darkMode"));
+    return savedMode || true;
   }
+
+  const modeChanger = () => {
+    setDarkMode((prevMode) => !prevMode);
+  };
 
   const onChange = (e) => {
     setSearchCountries(e.target.value);
@@ -48,37 +50,19 @@ function App() {
   const handleSubmit = (e) => {
     e.preventDefault();
     setQuery(searchCountries);
-    // setSearchCountries("");
-  };
-
-  const modeChanger = () => {
-    setDarkMode((prevMode) => !prevMode);
   };
 
   return (
     <div className={`App ${darkMode ? `dark` : `light`}`}>
       <Header darkMode={darkMode} modeChanger={modeChanger} />
 
-      {/* Search Form */}
-      <div className={`search container ${darkMode ? `dark` : `light`}`}>
-        <form
-          className={`search-form ${darkMode ? `charcoal` : `light`}`}
-          onSubmit={handleSubmit}
-        >
-          <div>
-            <i className="fas fa-search"></i>
-          </div>
-          <input
-            type="text"
-            placeholder="Search countries"
-            onChange={onChange}
-            value={searchCountries}
-            className={`${darkMode ? `charcoal` : `light`}`}
-          />
-        </form>
-      </div>
+      <SearchForm
+        darkMode={darkMode}
+        handleSubmit={handleSubmit}
+        onChange={onChange}
+        searchCountries={searchCountries}
+      />
 
-      {/* Show All Data */}
       <Countries
         countries={countries}
         isLoading={isLoading}
